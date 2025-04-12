@@ -101,7 +101,10 @@ def convert_episode(episode_path : str):
     # 解析每一集视频，转换文件，提取弹幕xml并输出到output目录中
     entry_file = os.path.join(episode_path,'entry.json') # 元信息json文件
     with open(entry_file, 'r', encoding='utf-8') as f:
-        entry_dict = json.load(f, encoding='utf-8')
+        if sys.platform == 'darwin':
+            entry_dict = json.load(f)
+        else:
+            entry_dict = json.load(f, encoding='utf-8')
     episode_name = build_title(entry_dict)    
     # 输出弹幕文件
     danmuku_path = os.path.join(episode_path,'danmaku.xml')
