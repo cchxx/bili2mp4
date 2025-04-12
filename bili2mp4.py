@@ -34,7 +34,8 @@ MAIN_DIR = os.path.abspath(args.video_dir) # 视频文件夹
 WORKING_DIR = os.getcwd()
 if not os.path.exists('bili2mp4_output'):
     os.mkdir("bili2mp4_output")
-OUTPUT_DIR = os.path.abspath('bili2mp4_output') # 输出文件夹
+BASE_DIR = os.path.abspath('bili2mp4_output') # 输出文件夹
+OUTPUT_DIR = ''
 
 # 检查ffmpeg是否存在,并设置ffmpeg工具路径
 FFMPEG_CMD = ""
@@ -83,8 +84,16 @@ def ffmpeg_concat_blv(segments:list, video_name:str):
 
 
 def build_title(entry_dict:dict):
+    global OUTPUT_DIR
     # 提取标题是个很麻烦的事
     title = entry_dict["title"].strip() # 主标题
+    # replace space to _ , and reduce consecutive _ and -
+    title = title.replace(' ', '_')
+    title = re.sub(r'_{2,}', '_', title)
+    title = re.sub(r'[-_]{2,}', '-', title)
+    # update output folder, and create session folder for relevant episodes
+    OUTPUT_DIR = os.path.join(BASE_DIR, title)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     if 'ep' in entry_dict.keys():
         if entry_dict['ep']["index_title"] == '':
             title += "-"
@@ -96,6 +105,10 @@ def build_title(entry_dict:dict):
         title += "-"
         title += entry_dict['page_data']["part"].strip()
     title = re.sub(r"[\/\\\:\*\?\"\<\>\|]", " ", title) # 过滤文件名中的非法字符
+    # replace space to _ , and reduce consecutive _ and -
+    title = title.replace(' ', '_')
+    title = re.sub(r'_{2,}', '_', title)
+    title = re.sub(r'[-_]{2,}', '-', title)
     return title
 
 
