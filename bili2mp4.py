@@ -91,6 +91,7 @@ def build_title(entry_dict:dict):
     title = title.replace(' ', '_')
     title = re.sub(r'_{2,}', '_', title)
     title = re.sub(r'[-_]{2,}', '-', title)
+    title = title.strip('_ -')
     # update output folder, and create session folder for relevant episodes
     OUTPUT_DIR = os.path.join(BASE_DIR, title)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -109,6 +110,7 @@ def build_title(entry_dict:dict):
     title = title.replace(' ', '_')
     title = re.sub(r'_{2,}', '_', title)
     title = re.sub(r'[-_]{2,}', '-', title)
+    title = title.strip('_ -')
     return title
 
 
