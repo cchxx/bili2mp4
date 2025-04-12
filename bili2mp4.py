@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 # bilibili 手机离线缓存转换
 import json
 import os
